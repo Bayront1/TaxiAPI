@@ -1,0 +1,31 @@
+﻿name: ASP.NET Syntax Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.0' 
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Test syntax
+      run: dotnet build --configuration Release --no-restore --no-build --warnAsError
